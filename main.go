@@ -8,7 +8,6 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/thisisrandom/emdedded-rest/database"
-	"github.com/thisisrandom/emdedded-rest/handlers"
 )
 
 func init() {
@@ -19,12 +18,14 @@ func main() {
 	s := http.NewServeMux()
 	d := database.NewDatabase()
 
-	readingHandler := handlers.NewReadingsHandler(d.Instance)
+	fmt.Println(d.Instance.Statement.Vars...)
+
+	//readingHandler := handlers.NewReadingsHandler(d.Instance)
 
 	s.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		switch method := r.Method; method {
 		case "POST":
-			readingHandler.POST(w, r)
+			w.Write([]byte("OK"))
 		case "GET":
 			w.Write([]byte("OK"))
 		}
