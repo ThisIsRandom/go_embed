@@ -27,6 +27,7 @@ func NewReadingsHandler(db *gorm.DB) *ReadingsHandler {
 }
 
 func (h *ReadingsHandler) GET(res http.ResponseWriter, req *http.Request) {
+	fmt.Println("test")
 	res.Write([]byte("OK"))
 }
 
