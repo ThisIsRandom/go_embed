@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"net/http"
 
-	"os"
-
 	"github.com/joho/godotenv"
 	"github.com/thisisrandom/emdedded-rest/database"
 )
@@ -31,8 +29,9 @@ func main() {
 		}
 	})
 
-	url := fmt.Sprint(os.Getenv("IP_ADDR"), ":", os.Getenv("PORT"))
-	err := http.ListenAndServe(url, s)
+	//url := fmt.Sprint(os.Getenv("IP_ADDR"), ":", os.Getenv("PORT"))
+
+	err := http.ListenAndServe(":8080", s)
 	if err != nil {
 		panic(err)
 	}
