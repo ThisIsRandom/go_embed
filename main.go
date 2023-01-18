@@ -15,7 +15,7 @@ func main() {
 	//s := http.NewServeMux()
 	d := database.NewDatabase()
 
-	fmt.Println(d.Instance.Statement.Vars...)
+	d.Instance.Create(&database.ReadingType{Title: "test"})
 
 	/* readingHandler := handlers.NewReadingsHandler(d.Instance)
 
