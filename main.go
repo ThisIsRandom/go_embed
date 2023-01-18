@@ -1,6 +1,22 @@
 package main
 
 import (
+	"net/http"
+)
+
+func main() {
+	srv := http.NewServeMux()
+
+	srv.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("ok"))
+	})
+
+	http.ListenAndServe(":8080", srv)
+}
+
+/* package main
+
+import (
 	"fmt"
 	"net/http"
 	"os"
@@ -37,3 +53,4 @@ func main() {
 
 	fmt.Println("RUNS")
 }
+*/
