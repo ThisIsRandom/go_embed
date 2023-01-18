@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"os"
@@ -15,6 +16,8 @@ func init() {
 }
 
 func main() {
+	log.Println("TESTER")
+
 	s := http.NewServeMux()
 	d := database.NewDatabase()
 
@@ -37,6 +40,4 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
-	fmt.Println("RUNS")
 }
