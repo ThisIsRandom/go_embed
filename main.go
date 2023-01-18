@@ -2,9 +2,13 @@ package main
 
 import (
 	"fmt"
+	"net/http"
+
+	"os"
 
 	"github.com/joho/godotenv"
 	"github.com/thisisrandom/emdedded-rest/database"
+	"github.com/thisisrandom/emdedded-rest/handlers"
 )
 
 func init() {
@@ -12,19 +16,17 @@ func init() {
 }
 
 func main() {
-	//s := http.NewServeMux()
+	s := http.NewServeMux()
 	d := database.NewDatabase()
 
-	d.Instance.Create(&database.ReadingType{Title: "test"})
-
-	/* readingHandler := handlers.NewReadingsHandler(d.Instance)
+	readingHandler := handlers.NewReadingsHandler(d.Instance)
 
 	s.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		switch method := r.Method; method {
 		case "POST":
 			readingHandler.POST(w, r)
 		case "GET":
-			readingHandler.GET(w, r)
+			w.Write([]byte("OK"))
 		}
 	})
 
@@ -33,6 +35,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	*/
+
 	fmt.Println("RUNS")
 }
