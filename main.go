@@ -1,8 +1,7 @@
 package main
 
 import (
-	"fmt"
-	"log"
+	"html/template"
 	"net/http"
 
 	"github.com/joho/godotenv"
@@ -15,16 +14,20 @@ func init() {
 }
 
 func main() {
-	log.Println("TESTER")
-
 	s := http.NewServeMux()
 	d := database.NewDatabase()
 
-	fmt.Println(d.Instance.Statement.Vars...)
-
 	readingHandler := handlers.NewReadingsHandler(d.Instance)
 
+	s.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("./static"))))
+
 	s.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		tmpl, _ := template.ParseFiles("./templates/index.html")
+
+		tmpl.Execute(w, nil)
+	})
+
+	s.HandleFunc("/readings", func(w http.ResponseWriter, r *http.Request) {
 		switch method := r.Method; method {
 		case "POST":
 			readingHandler.POST(w, r)

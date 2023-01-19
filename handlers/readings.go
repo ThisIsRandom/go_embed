@@ -49,6 +49,8 @@ func (h *ReadingsHandler) POST(res http.ResponseWriter, req *http.Request) {
 
 	r, _ := json.Marshal(reading.Data)
 
+	fmt.Println(string(r))
+
 	m := database.Reading{
 		Device: reading.Device,
 		Data:   string(r),
