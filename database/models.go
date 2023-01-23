@@ -15,3 +15,13 @@ type Reading struct {
 type ReadingType struct {
 	Title string `json:"title" gorm:"not null;primaryKey"`
 }
+
+type Config struct {
+	MinTemp int    `json:"minTemp"`
+	MaxTemp int    `json:"maxTemp"`
+	MinHum  int    `json:"minHum"`
+	MaxHum  int    `json:"maxHum"`
+	MaxHour int    `json:"maxHour"`
+	MinHour int    `json:"minHour"`
+	Name    string `json:"name"`
+}

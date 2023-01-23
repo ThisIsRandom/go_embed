@@ -18,6 +18,7 @@ func main() {
 	d := database.NewDatabase()
 
 	readingHandler := handlers.NewReadingsHandler(d.Instance)
+	configHandler := handlers.NewConfigsHandler(d.Instance)
 
 	s.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("./static"))))
 
@@ -33,6 +34,15 @@ func main() {
 			readingHandler.POST(w, r)
 		case "GET":
 			w.Write([]byte("OK"))
+		}
+	})
+
+	s.HandleFunc("/configs", func(w http.ResponseWriter, r *http.Request) {
+		switch method := r.Method; method {
+		case "POST":
+			configHandler.POST(w, r)
+		case "GET":
+			configHandler.GET(w, r)
 		}
 	})
 

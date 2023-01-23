@@ -24,7 +24,7 @@ func NewDatabase() *Database {
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
-	db.AutoMigrate(&ReadingType{}, &Reading{})
+	db.AutoMigrate(&ReadingType{}, &Reading{}, &Config{})
 
 	if err != nil {
 		panic("Couldnt connect to db")
