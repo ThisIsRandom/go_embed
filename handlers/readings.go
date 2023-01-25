@@ -27,8 +27,24 @@ func NewReadingsHandler(db *gorm.DB) *ReadingsHandler {
 }
 
 func (h *ReadingsHandler) GET(res http.ResponseWriter, req *http.Request) {
-	fmt.Println("test")
-	res.Write([]byte("OK"))
+	var readings []database.Reading
+
+	if result := h.db.Find(&readings); result.Error != nil {
+		res.WriteHeader(500)
+		res.Write([]byte(result.Error.Error()))
+	}
+
+	b, err := json.Marshal(readings)
+
+	if err != nil {
+		res.WriteHeader(500)
+		res.Write([]byte(err.Error()))
+	}
+
+	res.Header().Set("Content-Type", "text/html; charset=utf-8")
+	res.Header().Set("Access-Control-Allow-Origin", "*")
+	res.WriteHeader(200)
+	res.Write(b)
 }
 
 func (h *ReadingsHandler) POST(res http.ResponseWriter, req *http.Request) {

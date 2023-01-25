@@ -13,6 +13,10 @@ func init() {
 	godotenv.Load(".env")
 }
 
+type TemplateData struct {
+	Readings []database.Reading
+}
+
 func main() {
 	s := http.NewServeMux()
 	d := database.NewDatabase()
@@ -23,9 +27,15 @@ func main() {
 	s.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("./static"))))
 
 	s.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		var readings []database.Reading
+
+		if res := d.Instance.Find(&readings); res.Error != nil {
+			w.Write([]byte("Error"))
+		}
+
 		tmpl, _ := template.ParseFiles("./templates/index.html")
 
-		tmpl.Execute(w, nil)
+		tmpl.Execute(w, TemplateData{Readings: readings})
 	})
 
 	s.HandleFunc("/readings", func(w http.ResponseWriter, r *http.Request) {
@@ -33,7 +43,7 @@ func main() {
 		case "POST":
 			readingHandler.POST(w, r)
 		case "GET":
-			w.Write([]byte("OK"))
+			readingHandler.GET(w, r)
 		}
 	})
 

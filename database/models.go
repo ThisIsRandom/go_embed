@@ -23,5 +23,5 @@ type Config struct {
 	MaxHum  int    `json:"maxHum"`
 	MaxHour int    `json:"maxHour"`
 	MinHour int    `json:"minHour"`
-	Name    string `json:"name"`
+	Name    string `json:"name" gorm:"not null"`
 }
