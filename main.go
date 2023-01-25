@@ -48,6 +48,9 @@ func main() {
 	})
 
 	s.HandleFunc("/configs", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "*")
+		w.Header().Set("Content-Type", "application/json")
 		switch method := r.Method; method {
 		case "POST":
 			configHandler.POST(w, r)

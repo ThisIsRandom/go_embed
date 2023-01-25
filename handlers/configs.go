@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"encoding/json"
-	"io"
 	"net/http"
 
 	"github.com/thisisrandom/emdedded-rest/database"
@@ -22,20 +21,20 @@ func NewConfigsHandler(db *gorm.DB) *ConfigsHandler {
 func (h *ConfigsHandler) POST(res http.ResponseWriter, req *http.Request) {
 	cfg := new(database.Config)
 
-	d, err := io.ReadAll(req.Body)
+	d := json.NewDecoder(req.Body)
+
 	defer req.Body.Close()
 
-	if err != nil {
-		res.WriteHeader(http.StatusBadRequest)
-		res.Write([]byte(err.Error()))
-	}
-
-	if err := json.Unmarshal(d, &cfg); err != nil {
+	if err := d.Decode(cfg); err != nil {
 		res.WriteHeader(500)
 		res.Write([]byte(err.Error()))
 	}
 
-	h.db.Create(cfg)
+	if err := h.db.Where("name = ?", cfg.Name).First(&database.Config{}).Error; err != nil {
+		h.db.Create(cfg)
+	} else {
+		h.db.Where("name = ?", cfg.Name).Save(cfg)
+	}
 
 	res.WriteHeader(200)
 	res.Write([]byte("OK"))
