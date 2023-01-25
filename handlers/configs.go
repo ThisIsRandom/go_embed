@@ -58,6 +58,8 @@ func (h *ConfigsHandler) GET(res http.ResponseWriter, req *http.Request) {
 		res.Write([]byte(result.Error.Error()))
 	}
 
+	res.Header().Set("Content-Type", "text/html; charset=utf-8")
+	res.Header().Set("Access-Control-Allow-Origin", "*")
 	res.WriteHeader(200)
 	res.Write(b)
 }
